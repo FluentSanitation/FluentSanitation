@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentSanitation", "src\FluentSanitation\FluentSanitation.csproj", "{10AA5BC6-B180-45A0-BA63-18DC5C3DCE2C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentSanitation.AspNetCore", "src\FluentSanitation.AspNetCore\FluentSanitation.AspNetCore.csproj", "{AFAD4875-D6B4-4463-AF5C-68A29C71CCCB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{10AA5BC6-B180-45A0-BA63-18DC5C3DCE2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10AA5BC6-B180-45A0-BA63-18DC5C3DCE2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10AA5BC6-B180-45A0-BA63-18DC5C3DCE2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10AA5BC6-B180-45A0-BA63-18DC5C3DCE2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFAD4875-D6B4-4463-AF5C-68A29C71CCCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFAD4875-D6B4-4463-AF5C-68A29C71CCCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFAD4875-D6B4-4463-AF5C-68A29C71CCCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFAD4875-D6B4-4463-AF5C-68A29C71CCCB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
+∂∂
