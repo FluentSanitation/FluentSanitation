@@ -10,6 +10,10 @@ using Binder = FluentSanitation.Internal.Binder;
 
 namespace FluentSanitation
 {
+  /// <summary>
+  /// The base class for object sanitizers.
+  /// </summary>
+  /// <typeparam name="T">The type of the object being sanitized</typeparam>
   public abstract class Sanitizer<T> : ISanitizer where T : class
   {
     private Dictionary<string, MemberInfo>? _memberCache;
@@ -23,17 +27,42 @@ namespace FluentSanitation
 
     object? ISanitizer.Sanitize(object o) => Sanitize(o as T);
 
+    /// <summary>
+    /// Configure rule(s) for a property.
+    /// </summary>
+    /// <param name="selector">An expression selecting the property to sanitize</param>
+    /// <typeparam name="TProperty">The type of the property being sanitized</typeparam>
+    /// <returns>A <c>RuleBuilder</c> instance to configure sanitizers</returns>
     public RuleBuilder<T, TProperty> RuleFor<TProperty>(Expression<Func<T, TProperty>> selector) =>
       new RuleBuilder<T, TProperty>(selector, this);
 
+    /// <summary>
+    /// Configure rule(s) for a property, inline.
+    /// </summary>
+    /// <param name="selector">An expression selecting the property to sanitize</param>
+    /// <param name="sanitizer">A property sanitizer</param>
+    /// <typeparam name="TProperty">The type of the property being sanitized</typeparam>
+    /// <returns>A <c>RuleBuilder</c> instance to configure additional sanitizers</returns>
     public RuleBuilder<T, TProperty> RuleFor<TProperty>(Expression<Func<T, TProperty>> selector,
       Func<T, TProperty> sanitizer) =>
       new RuleBuilder<T, TProperty>(selector, this).SetSanitizer(sanitizer);
 
+    /// <summary>
+    /// Configure rule(s) for a property, inline.
+    /// </summary>
+    /// <param name="selector">An expression selecting the property to sanitize</param>
+    /// <param name="sanitizer">A property sanitizer</param>
+    /// <typeparam name="TProperty">The type of the property being sanitized</typeparam>
+    /// <returns>A <c>RuleBuilder</c> instance to configure additional sanitizers</returns>
     public RuleBuilder<T, TProperty> RuleFor<TProperty>(Expression<Func<T, TProperty>> selector,
       Func<TProperty, TProperty> sanitizer) =>
       new RuleBuilder<T, TProperty>(selector, this).SetSanitizer(sanitizer);
 
+    /// <summary>
+    /// Sanitize an object, using the pre-configured rules.
+    /// </summary>
+    /// <param name="instance">The object to sanitize</param>
+    /// <returns>The sanitized object</returns>
     public virtual T? Sanitize(T? instance)
     {
       if (instance is null)
