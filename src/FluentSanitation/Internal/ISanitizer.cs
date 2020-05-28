@@ -6,4 +6,9 @@ namespace FluentSanitation.Internal
   {
     object? Sanitize(object instance);
   }
+
+  public interface ISanitizer<T> : ISanitizer
+  {
+    T Sanitize(T instance);
+  }
 }

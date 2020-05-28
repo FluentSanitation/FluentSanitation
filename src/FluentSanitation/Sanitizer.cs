@@ -14,7 +14,7 @@ namespace FluentSanitation
   /// The base class for object sanitizers.
   /// </summary>
   /// <typeparam name="T">The type of the object being sanitized</typeparam>
-  public abstract class Sanitizer<T> : ISanitizer where T : class
+  public abstract class Sanitizer<T> : ISanitizer<T>
   {
     private Dictionary<string, MemberInfo>? _memberCache;
     private readonly Dictionary<string, Action<T, object>> _setterCache
@@ -22,10 +22,11 @@ namespace FluentSanitation
 
     private IBinder? _binder;
 
-    public Dictionary<string, List<SanitizeRule<T>>> Rules { get; }
+    protected Dictionary<string, List<SanitizeRule<T>>> Rules { get; }
       = new Dictionary<string, List<SanitizeRule<T>>>();
 
-    object? ISanitizer.Sanitize(object o) => Sanitize(o as T);
+    object? ISanitizer.Sanitize(object o) =>
+      o is T t ? Sanitize(t) : o;
 
     /// <summary>
     /// Configure rule(s) for a property.
@@ -48,22 +49,11 @@ namespace FluentSanitation
       new RuleBuilder<T, TProperty>(selector, this).SetSanitizer(sanitizer);
 
     /// <summary>
-    /// Configure rule(s) for a property, inline.
-    /// </summary>
-    /// <param name="selector">An expression selecting the property to sanitize</param>
-    /// <param name="sanitizer">A property sanitizer</param>
-    /// <typeparam name="TProperty">The type of the property being sanitized</typeparam>
-    /// <returns>A <c>RuleBuilder</c> instance to configure additional sanitizers</returns>
-    public RuleBuilder<T, TProperty> RuleFor<TProperty>(Expression<Func<T, TProperty>> selector,
-      Func<TProperty, TProperty> sanitizer) =>
-      new RuleBuilder<T, TProperty>(selector, this).SetSanitizer(sanitizer);
-
-    /// <summary>
     /// Sanitize an object, using the pre-configured rules.
     /// </summary>
     /// <param name="instance">The object to sanitize</param>
     /// <returns>The sanitized object</returns>
-    public virtual T? Sanitize(T? instance)
+    public virtual T Sanitize(T instance)
     {
       if (instance is null)
         return instance;

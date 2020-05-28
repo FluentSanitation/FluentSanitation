@@ -9,7 +9,7 @@ namespace FluentSanitation.Internal
   /// </summary>
   /// <typeparam name="T">The type of object being sanitized</typeparam>
   /// <typeparam name="TProperty">The type of the property being sanitized</typeparam>
-  public class RuleBuilder<T, TProperty> where T : class
+  public class RuleBuilder<T, TProperty>
   {
     private readonly Expression<Func<T, TProperty>> _expression;
     private readonly string _key;
