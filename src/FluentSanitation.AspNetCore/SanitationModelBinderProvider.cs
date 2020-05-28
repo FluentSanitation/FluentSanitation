@@ -20,10 +20,10 @@ namespace FluentSanitation.AspNetCore
       if (_cache.ContainsKey(modelType))
         return _cache[modelType];
 
-      var type = typeof(Sanitizer<>).MakeGenericType(modelType);
+      var type = typeof(ISanitizer<>).MakeGenericType(modelType);
 
       var sanitizer = context.Services.GetServices<ISanitizer>()
-        .FirstOrDefault(s => s.GetType().IsSubclassOf(type));
+        .FirstOrDefault(s => type.IsInstanceOfType(s));
 
       var binder = sanitizer != null
         ? new SanitationModelBinder(sanitizer)
