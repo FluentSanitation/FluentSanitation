@@ -10,8 +10,7 @@ namespace FluentSanitation.AspNetCore
 {
   public class SanitationModelBinderProvider : IModelBinderProvider
   {
-    private readonly ConcurrentDictionary<Type, IModelBinder> _cache
-      = new ConcurrentDictionary<Type, IModelBinder>();
+    private readonly ConcurrentDictionary<Type, IModelBinder> _cache = new();
 
     public IModelBinder GetBinder(ModelBinderProviderContext context)
     {
@@ -25,7 +24,7 @@ namespace FluentSanitation.AspNetCore
       var sanitizer = context.Services.GetServices<ISanitizer>()
         .FirstOrDefault(s => type.IsInstanceOfType(s));
 
-      var binder = sanitizer != null
+      var binder = sanitizer is not null
         ? new SanitationModelBinder(sanitizer)
         : null;
 

@@ -6,6 +6,7 @@ using System.Reflection;
 
 using FluentSanitation.Extensions;
 using FluentSanitation.Internal;
+using FluentSanitation.Sanitizers;
 using Binder = FluentSanitation.Internal.Binder;
 
 namespace FluentSanitation
@@ -18,12 +19,12 @@ namespace FluentSanitation
   {
     private Dictionary<string, MemberInfo>? _memberCache;
     private readonly Dictionary<string, Action<T, object>> _setterCache
-      = new Dictionary<string, Action<T, object>>(StringComparer.OrdinalIgnoreCase);
+      = new(StringComparer.OrdinalIgnoreCase);
 
     private IBinder? _binder;
 
     protected Dictionary<string, List<SanitizeRule<T>>> Rules { get; }
-      = new Dictionary<string, List<SanitizeRule<T>>>();
+      = new();
 
     object? ISanitizer.Sanitize(object o) =>
       o is T t ? Sanitize(t) : o;
@@ -35,7 +36,7 @@ namespace FluentSanitation
     /// <typeparam name="TProperty">The type of the property being sanitized</typeparam>
     /// <returns>A <c>RuleBuilder</c> instance to configure sanitizers</returns>
     public RuleBuilder<T, TProperty> RuleFor<TProperty>(Expression<Func<T, TProperty>> selector) =>
-      new RuleBuilder<T, TProperty>(selector, this);
+      new(selector, this);
 
     /// <summary>
     /// Configure rule(s) for a property, inline.
@@ -102,10 +103,13 @@ namespace FluentSanitation
 
       setter = member switch
       {
-        FieldInfo fi => (i, v) => fi?.SetValue(i, v),
+        FieldInfo fi => (i, v) => fi.SetValue(i, v),
         PropertyInfo pi => pi.CreateSetter<T>(),
         _ => throw new InvalidOperationException()
       };
+
+      if (setter is null)
+        throw new InvalidOperationException();
 
       _setterCache.Add(action.PropertyName, setter);
 

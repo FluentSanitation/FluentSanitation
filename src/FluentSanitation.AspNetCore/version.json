@@ -2,5 +2,5 @@
   "$schema": "https://raw.githubusercontent.com/dotnet/Nerdbank.GitVersioning/master/src/NerdBank.GitVersioning/version.schema.json",
   "inherit": true,
   "pathFilters": ["."],
-  "version": "0.1-master"
+  "version": "0.2"
 }

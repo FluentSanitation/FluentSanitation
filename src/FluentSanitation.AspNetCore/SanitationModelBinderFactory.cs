@@ -16,10 +16,10 @@ namespace FluentSanitation.AspNetCore
       IOptions<MvcOptions> options,
       IServiceProvider serviceProvider)
     {
-      var me = options.Value.ModelBinderProviders.FirstOrDefault(t =>
-        t.GetType() == typeof(SanitationModelBinderProvider));
+      var me = options.Value.ModelBinderProviders
+        .FirstOrDefault(t => t.GetType() == typeof(SanitationModelBinderProvider));
 
-      if (me != null)
+      if (me is not null)
         options.Value.ModelBinderProviders.Remove(me);
 
       _factory = new ModelBinderFactory(metadataProvider, options, serviceProvider);

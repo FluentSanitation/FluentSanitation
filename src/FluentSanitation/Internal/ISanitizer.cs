@@ -1,5 +1,3 @@
-using System;
-
 namespace FluentSanitation.Internal
 {
   public interface ISanitizer

@@ -12,11 +12,15 @@ namespace FluentSanitation.Extensions
         .GroupBy(a => a.FullName)
         .Select(g => g.First())
         .SelectMany(a => a.GetExportedTypes())
-        .Where(t => !t.IsAbstract && !t.IsInterface && t.BaseType?.IsGenericType == true && t.BaseType?.GetGenericTypeDefinition() == typeof(Sanitizer<>));
+        .Where(t => !t.IsAbstract
+          && !t.IsInterface
+          && t.BaseType?.IsGenericType == true
+          && t.BaseType?.GetGenericTypeDefinition() == typeof(Sanitizer<>));
 
     internal static IEnumerable<MemberInfo> GetAllMembers(this Type type, BindingFlags bindingFlags) =>
       type.IsInterface
-        ? Enumerable.Union(type.GetInterfaces(), new[] {type}).SelectMany(i => i.GetMembers(bindingFlags)).Distinct()
+        ? Enumerable.Union(type.GetInterfaces(), new[] {type})
+          .SelectMany(i => i.GetMembers(bindingFlags)).Distinct()
         : type.GetMembers(bindingFlags);
   }
 }

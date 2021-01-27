@@ -19,7 +19,7 @@ namespace FluentSanitation.AspNetCore
     public async Task BindModelAsync(ModelBindingContext bindingContext)
     {
       var factory = bindingContext.ActionContext.HttpContext.RequestServices
-        .GetService<ISanitationModelBinderFactory>();
+        .GetRequiredService<ISanitationModelBinderFactory>();
 
       var binder = factory.CreateBinder(new ModelBinderFactoryContext {Metadata = bindingContext.ModelMetadata});
 
@@ -28,7 +28,12 @@ namespace FluentSanitation.AspNetCore
       if (bindingContext.Result.Model is null)
         return;
 
-      bindingContext.Model = _sanitizer.Sanitize(bindingContext.Result.Model);
+      var model = _sanitizer.Sanitize(bindingContext.Result.Model);
+
+      if (model is null)
+        return;
+
+      bindingContext.Model = model;
     }
   }
 }
